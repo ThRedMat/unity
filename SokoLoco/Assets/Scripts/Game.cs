@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Sokoban : MonoBehaviour {
+public class Game : MonoBehaviour {
 	public string levelName;
 	public float tileSize;
 	
@@ -20,6 +20,8 @@ public class Sokoban : MonoBehaviour {
 	public Sprite tileSprite;
 	public Sprite heroSprite;
 	public Sprite ballSprite;
+
+	public UnityEngine.UI.Button NextLevel;
 
 	public KeyCode[] userInputKeys;
 	int[,] levelData;
@@ -48,7 +50,6 @@ public class Sokoban : MonoBehaviour {
 	void ParseLevel(){
 		TextAsset textFile = Resources.Load(levelName) as TextAsset;
 		string[] lines = textFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-		Debug.Log("working");
 		string[] nums = lines[0].Split(new[] { ',' });
 		rows = lines.Length;
 		cols = nums.Length;
@@ -73,8 +74,9 @@ public class Sokoban : MonoBehaviour {
 	}
 	
 	void CreateLevel(){
+		NextLevel.gameObject.SetActive(false);
 		middleOffset.x=cols*tileSize*0.5f-tileSize*0.5f;
-		middleOffset.y=rows*tileSize*0.5f-tileSize*0.5f;;
+		middleOffset.y=rows*tileSize*0.5f-tileSize*0.5f;
 		GameObject tile;
 		SpriteRenderer sr;
 		GameObject ball;
@@ -86,7 +88,7 @@ public class Sokoban : MonoBehaviour {
 
 				if(val!=invalidTile){
 					tile = new GameObject("tile"+i.ToString()+"_"+j.ToString());
-					tile.transform.localScale=Vector2.one*(tileSize-1);
+					tile.transform.localScale=Vector2.one*(tileSize - 40);
 					sr = tile.AddComponent<SpriteRenderer>();
 					sr.sprite=tileSprite;
 					tile.transform.position=GetScreenPointFromLevelIndices(i,j);
@@ -98,7 +100,7 @@ public class Sokoban : MonoBehaviour {
 
 						if(val==heroTile){
 							hero = new GameObject("hero");
-							hero.transform.localScale=Vector2.one*(tileSize-1);
+							hero.transform.localScale=Vector2.one*(tileSize - 40);
 							sr = hero.AddComponent<SpriteRenderer>();
 							sr.sprite=heroSprite;
 							sr.sortingOrder=1;
@@ -109,7 +111,7 @@ public class Sokoban : MonoBehaviour {
 						}else if(val==ballTile){
 							ballCount++;
 							ball = new GameObject("ball"+ballCount.ToString());
-							ball.transform.localScale=Vector2.one*(tileSize-1);
+							ball.transform.localScale=Vector2.one*(tileSize - 40);
 							sr = ball.AddComponent<SpriteRenderer>();
 							sr.sprite=ballSprite;
 							sr.sortingOrder=1;
@@ -128,13 +130,13 @@ public class Sokoban : MonoBehaviour {
     private void ApplyUserInput()
     {
         if(Input.GetKeyUp(userInputKeys[0])){
-			TryMoveHero(0);//up
+			TryMoveHero(0);
 		}else if(Input.GetKeyUp(userInputKeys[1])){
-			TryMoveHero(1);//right
+			TryMoveHero(1);
 		}else if(Input.GetKeyUp(userInputKeys[2])){
-			TryMoveHero(2);//down
+			TryMoveHero(2);
 		}else if(Input.GetKeyUp(userInputKeys[3])){
-			TryMoveHero(3);//left
+			TryMoveHero(3);
 		}
     }
 
@@ -191,6 +193,7 @@ public class Sokoban : MonoBehaviour {
     private void CheckCompletion()
     {
         int ballsOnDestination=0;
+		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
                 if(levelData[i,j]==ballOnDestinationTile){
@@ -199,8 +202,8 @@ public class Sokoban : MonoBehaviour {
 			}
 		}
 		if(ballsOnDestination==ballCount){
-			Debug.Log("level complete");
-			gameOver=true;
+			NextLevel.gameObject.SetActive(true);
+			gameOver =true;
 		}
     }
     private GameObject GetOccupantAtPosition(Vector2 heroPos)
@@ -244,16 +247,16 @@ public class Sokoban : MonoBehaviour {
     {
         switch(direction){
 			case 0:
-			objPos.x-=1;//up
+			objPos.x-=1;
 			break;
 			case 1:
-			objPos.y+=1;//right
+			objPos.y+=1;
 			break;
 			case 2:
-			objPos.x+=1;//down
+			objPos.x+=1;
 			break;
 			case 3:
-			objPos.y-=1;//left
+			objPos.y-=1;
 			break;
 		}
 		return objPos;
