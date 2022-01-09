@@ -11,8 +11,8 @@
 
 ## Fonctionnalités bonus :
 
-- Effectuez le travail en 3D.
-- Implémentez un bouton UNDO pour permettre au joueur d'annuler un coup (et pourquoi pas plusieurs !). x
+- Effectuez le travail en 3D. ❌
+- Implémentez un bouton UNDO pour permettre au joueur d'annuler un coup (et pourquoi pas plusieurs !). ❌
 - Faites en sorte que le mouvement des blocs soit fluide lors de leur déplacement d'une case à l'autre. Le reste du jeu est bloqué lorsque un bloc se déplace. ✅
 - Implémentez un bouton RESTART permettant de relancer le niveau. ✅
-- Implémentez une animation quelconque sur un bloc lorsque celui-ci se déplace. x
+- Implémentez une animation quelconque sur un bloc lorsque celui-ci se déplace. ❌
